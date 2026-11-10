@@ -1,0 +1,58 @@
+```java
+package com.example.config;
+
+import java.util.*;
+import java.util.Optional;
+
+/**
+ * Holds a simple {@link Map} that maps configuration keys to string values.
+ *
+ * <p>In a production project you would typically load the map from a file,
+ * environment variables, or a remote source during construction.</p>
+ */
+public class Configuration {
+
+    /** The underlying map – you can switch to {@code ConcurrentHashMap} if you need thread‑safety. */
+    private final Map<String, String> configMap;
+
+    /**
+     * Constructs a new Configuration instance.
+     * In a real application you would populate {@code configMap} here (e.g. by reading a properties file).
+     */
+    public Configuration() {
+        // Example: create an empty map – replace with your own loader.
+        this.configMap = new LinkedHashMap<>();
+    }
+
+    /** Returns an unmodifiable view of the internal map. */
+    public Map<String, String> getValues() {
+        return Collections.unmodifiableMap(configMap);
+    }
+
+    /** Retrieves the value for the given key, returning {@code Optional.empty()} if absent. */
+    public Optional<String> getValue(String key) {
+        return Optional.ofNullable(configMap.get(key));
+    }
+
+    /**
+     * Stores or updates the value for the supplied key.
+     *
+     * @param key   the configuration key
+     * @param value the new value (may be {@code null})
+     */
+    public void setValue(String key, String value) {
+        // One‑liner replaces the previous if/else + writerConfig().
+        configMap.put(key, value);
+        // Perform any side‑effects here (e.g., persist to disk).
+        writerConfig();   // <-- implement this method separately
+    }
+
+    /**
+     * Placeholder for whatever work happens when the configuration changes.
+     * Replace the body with your actual persistence logic.
+     */
+    private void writerConfig() {
+        // TODO: implement file‑write, database update, etc.
+    }
+}
+
